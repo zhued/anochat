@@ -1,10 +1,10 @@
 
 
-COMPILE_OPTIONS = -d bin/ -cp bin/
+COMPILE_OPTIONS = -d Anochat/bin/ -cp Anochat/bin/
 
 all : Everything
 
 
-Everything : src/com/**/**/*.java
-	javac $(COMPILE_OPTIONS) src/com/**/**/*.java
+Everything : Anochat/src/com/**/**/*.java
+	javac $(COMPILE_OPTIONS) Anochat/src/com/**/**/*.java
 
