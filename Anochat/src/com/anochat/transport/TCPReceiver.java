@@ -4,15 +4,28 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class TCPReceiver {
+import com.anochat.node.Node;
+import com.anochat.wireformats.EventFactory;
 
+public class TCPReceiver implements Runnable {
+
+	private final Node node;
 	private final Socket socket;
 	private final DataInputStream dataInputStream;
 	private boolean running = false;
 	
-	public TCPReceiver(Socket socket) throws IOException {
+	public TCPReceiver(Node node, Socket socket) throws IOException {
+		this.node = node;
 		this.socket = socket;
 		this.dataInputStream = new DataInputStream(socket.getInputStream());
+	}
+	
+	public void run() {
+		try {
+			receive();
+		} catch(IOException ioe) {
+			System.out.println("Error: " + ioe.getMessage());
+		}
 	}
 	
 	private void receive() throws IOException {
@@ -26,8 +39,8 @@ public class TCPReceiver {
 			int dataLength = dataInputStream.readInt(); // blocking call
 			byte[] data = new byte[dataLength];
 			dataInputStream.readFully(data, 0, dataLength); // blocking call
-
-			System.out.println("Received data!");
+			
+			node.onEvent(EventFactory.getInstance().createEvent(data));
 		}
 	}
 }
