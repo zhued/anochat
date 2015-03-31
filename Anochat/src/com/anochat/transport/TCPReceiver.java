@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import com.anochat.concurrent.Task;
 import com.anochat.node.Node;
 import com.anochat.wireformats.EventFactory;
 

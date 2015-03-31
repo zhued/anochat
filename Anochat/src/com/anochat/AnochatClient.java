@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
+import com.anochat.concurrent.Task;
+import com.anochat.concurrent.ThreadPoolManager;
 import com.anochat.node.Node;
 import com.anochat.transport.TCPConnection;
 import com.anochat.wireformats.Event;
@@ -12,7 +14,12 @@ import com.anochat.wireformats.Protocol;
 
 public class AnochatClient implements Node {
 	
+	private final ThreadPoolManager threadPool;
 	private TCPConnection server;
+	
+	public AnochatClient() {
+		threadPool = new ThreadPoolManager(8);
+	}
 	
 	public void connectToServer(String serverUrl, int port) throws IOException {
 		server = new TCPConnection(this, new Socket(serverUrl, port));
@@ -28,6 +35,11 @@ public class AnochatClient implements Node {
 		switch(event.getType()) {
 		case Protocol.NODE_SENDS_MESSAGE: onMessageReceipt((NodeSendsMessage)event); break;
 		}
+	}
+	
+	@Override
+	public void addTask(Task task) {
+		threadPool.addTask(task);
 	}
 	
 	public void onMessageReceipt(NodeSendsMessage event) {

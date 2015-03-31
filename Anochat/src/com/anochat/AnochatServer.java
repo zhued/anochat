@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.anochat.concurrent.Task;
+import com.anochat.concurrent.ThreadPoolManager;
 import com.anochat.node.Node;
 import com.anochat.transport.TCPConnection;
 import com.anochat.transport.TCPServer;
@@ -14,15 +16,15 @@ import com.anochat.wireformats.Protocol;
 
 public class AnochatServer implements Node {
 	
+	private final ThreadPoolManager threadPool;
 	private TCPServer tcpServer;
-	private Thread tcpServerThread;
 	
 	private Map<String, TCPConnection> connections
 		= new HashMap<String, TCPConnection>();
 
 	public AnochatServer(int port) throws IOException {
+		threadPool = new ThreadPoolManager(8);
 		tcpServer = new TCPServer(this, port);
-		tcpServerThread = new Thread(tcpServer);
 	}
 	
 	@Override
@@ -41,8 +43,13 @@ public class AnochatServer implements Node {
 		}
 	}
 	
+	@Override
+	public void addTask(Task task) {
+		threadPool.addTask(task);
+	}
+	
 	public void start() {
-		tcpServerThread.start();
+		addTask(tcpServer);
 	}
 	
 	public void onMessageReceipt(NodeSendsMessage event) {

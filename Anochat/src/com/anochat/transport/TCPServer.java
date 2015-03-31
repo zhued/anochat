@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.anochat.concurrent.Task;
 import com.anochat.node.Node;
 
-public class TCPServer implements Runnable {
+public class TCPServer extends Task {
 
 	private final Node node;
 	private final ServerSocket socket;
