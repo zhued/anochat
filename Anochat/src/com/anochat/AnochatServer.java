@@ -35,6 +35,12 @@ public class AnochatServer implements Node {
 		}
 		System.out.println("Client connected: " + conn.id);
 	}
+	
+	@Override
+	public void onDisconnect(String id) throws IOException {
+		connections.remove(id);
+		System.out.println("Client disconnected: " + id);
+	}
 
 	@Override
 	public void onEvent(Event event) {

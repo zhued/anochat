@@ -15,17 +15,24 @@ public class TCPReceiver implements Runnable {
 	private final DataInputStream dataInputStream;
 	private boolean running = false;
 	
-	public TCPReceiver(Node node, Socket socket) throws IOException {
+	public final String id;
+	
+	public TCPReceiver(Node node, Socket socket, String id) throws IOException {
 		this.node = node;
 		this.socket = socket;
 		this.dataInputStream = new DataInputStream(socket.getInputStream());
+		this.id = id;
 	}
 	
 	public void run() {
 		try {
 			receive();
 		} catch(IOException ioe) {
-			System.out.println("Error: " + ioe.getMessage());
+			try {
+			node.onDisconnect(id);
+			} catch (IOException ioe2) {
+				System.err.println("Error when disconnecting: " + ioe2.getMessage());
+			}
 		}
 	}
 	

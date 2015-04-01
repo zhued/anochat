@@ -30,6 +30,10 @@ public class AnochatClient implements Node {
 		// unused
 	}
 	
+	public void onDisconnect(String id) throws IOException {
+		System.out.println("Disconnected from server!");
+	}
+	
 	@Override
 	public void onEvent(Event event) {
 		switch(event.getType()) {

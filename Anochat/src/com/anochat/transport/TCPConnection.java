@@ -14,10 +14,10 @@ public class TCPConnection {
 	public final String id;
 	
 	public TCPConnection(Node node, Socket socket) throws IOException {
+		id = socket.getInetAddress() + ":" + socket.getPort();
 		this.node = node;
 		sender = new TCPSender(socket);
-		receiver = new TCPReceiver(node, socket);
-		id = socket.getInetAddress() + ":" + socket.getPort();
+		receiver = new TCPReceiver(node, socket, id);
 		new Thread(receiver).start();
 	}
 	
