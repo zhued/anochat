@@ -51,9 +51,19 @@ public class AnochatServer implements Node {
 	public void start() {
 		addTask(tcpServer);
 	}
+
+	public void send(TCPConnection conn, Event e) throws IOException {
+		conn.send(e.getBytes());
+	}
 	
-	public void onMessageReceipt(NodeSendsMessage event) {
-		System.out.println(event.message);
+	private void onMessageReceipt(NodeSendsMessage event) {
+		try {
+			for(String key : connections.keySet()) {
+				send(connections.get(key), event);
+			}
+		} catch(IOException ioe) {
+			System.out.println("Failed to parrot message!");
+		}
 	}
 	
 	public static void main(String[] args) {

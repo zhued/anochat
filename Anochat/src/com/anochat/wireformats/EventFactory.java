@@ -14,7 +14,7 @@ public class EventFactory {
 	
 	public Event createEvent(byte[] data) throws IOException {
 		if(data == null || data.length < 1) return null;
-
+		
 		switch(data[0]) {
 		case Protocol.NODE_SENDS_MESSAGE: return new NodeSendsMessage(data);
 
