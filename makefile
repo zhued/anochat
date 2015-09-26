@@ -7,4 +7,4 @@ all : Everything
 
 Everything : Anochat/src/com/**/**/*.java
 	javac $(COMPILE_OPTIONS) Anochat/src/com/**/**/*.java
-
+	javac $(COMPILE_OPTIONS) Anochat/src/com/**/*.java

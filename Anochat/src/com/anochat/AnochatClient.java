@@ -57,8 +57,14 @@ public class AnochatClient implements Node {
 	
 	public static void main(String[] args) {
 		try {
+			if(args.length < 2) {
+				System.out.println("Please provide server and port");
+				System.exit(1);
+			}
+			String server = args[0];
+			int port = Integer.parseInt(args[1]);
 			AnochatClient client = new AnochatClient();
-			client.connectToServer("localhost", 10865);
+			client.connectToServer(server, port);
 			Scanner keyboard = new Scanner(System.in);
 			String message = keyboard.nextLine();
 			while(message != null && !message.equalsIgnoreCase("quit")) {
